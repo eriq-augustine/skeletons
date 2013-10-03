@@ -1,0 +1,8 @@
+account gmail {
+   set smtp-use-starttls
+   set smtp=smtp://smtp.gmail.com:587
+   set smtp-auth=login
+   set smtp-auth-user=<TODO:user>@gmail.com
+   set smtp-auth-password=<TODO:mypassword>
+   set from="<TODO:ShownName> "
+}

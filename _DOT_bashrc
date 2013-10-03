@@ -1,0 +1,171 @@
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+umask 007
+
+# IBUS
+#export GTK_IM_MODULE=ibus
+#export XMODIFIERS=@im=ibus
+#export QT_IM_MODULE=ibus
+#export GTK_IM_MODULE_FILE=/usr/lib/gtk-3.0/3.0.0/immodules.cache
+
+export LD_LIBRARY_PATH=.:lib:/usr/local/lib
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/libJMagick-6.4.0.so
+
+export GOPATH=$HOME/spf/server
+
+export LANG='en_US.UTF-8'
+
+export WINEPREFIX=/media/media/wineSteam
+export WINEARCH=win64
+
+#export WINEPREFIX=$HOME/.wine32
+#export WINEARCH=win32
+
+#export WINEPREFIX=$HOME/.wine
+#export WINEARCH=win64
+
+export CLASSPATH=.:bin:build:lib:lib/*:classes:config
+export PATH=$PATH:$HOME/bin:$HOME/scripts:/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/bin:/usr/games:/usr/bin/jre1.6.0_29/bin:/usr/bin/jdk1.7.0_02/bin
+export WORKINGDIR=`cat $HOME/._workingDirectoryConfig`
+
+# osu
+#export PATH=$PATH:/opt/osu
+
+# mongo
+#export PATH=$PATH:/usr/share/mongo
+
+# chromium Stuff
+#export PATH=/usr/local/gold/bin:$HOME/chromium/depot_tools:$PATH
+export GYP_GENERATORS='ninja'
+export GYP_DEFINES='component=shared_library'
+export GYP_DEFINES=$GYP_DEFINES' disable_nacl=1'
+export GYP_DEFINES=$GYP_DEFINES' clang=1'
+export ARCH='x86_64'
+
+# Both AMI and EC2 tools are installed here.
+#export EC2_HOME="/usr/local/lib/ec2-ami-tools-1.3-66634"
+#export PATH=$PATH:${EC2_HOME}/bin
+
+# export JAVA_HOME=/usr/bin/jre1.6.0_29
+# export JDK_HOME=/usr/bin/jdk1.7.0_02
+export JAVA_HOME=/usr/lib/jvm/java-7-openjdk
+export JDK_HOME=/usr/lib/jvm/java-7-openjdk
+
+export EDITOR=/usr/bin/vim
+
+export ANT_HOME=/usr/share/apache-ant
+export PATH=$PATH:$ANT_HOME/bin
+
+# ibus stuff
+#export GTK_IM_MODULE=ibus
+#export XMODIFIERS=@im=ibus
+#export QT_IM_MODULE=ibus
+
+#More autocompletions
+complete -G "*.db" sqlite3
+complete -G "*.csv" sqlite
+complete -G "*.sql" sqlite
+
+# don't put duplicate lines in the history. See bash(1) for more options
+# ... or force ignoredups and ignorespace
+HISTCONTROL=ignoredups:ignorespace
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000000
+HISTFILESIZE=2000000
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+#force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# enable color support of ls and also add handy aliases
+if [ -x /bin/dircolors -o -x /usr/bin/dircolors ]; then
+    eval "`dircolors -b`"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    #alias fgrep='fgrep --color=auto'
+    #alias egrep='egrep --color=auto'
+fi
+
+# some more ls aliases
+#alias ll='ls -l'
+#alias la='ls -A'
+#alias l='ls -CF'
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if [ -f /etc/bash_completion.d ]; then
+    . /etc/bash_completion.d
+fi
+
+#export GTK_IM_MODULE=ibus
+#export XMODIFIERS=@im=ibus
+#export QT_IM_MODULE=ibus
