@@ -17,6 +17,8 @@ alias valgrindfull="valgrind --leak-check=full --show-reachable=yes --track-orig
 
 alias quit="exit"
 
+alias clipboard="xclip -sel clip"
+
 # Java stuff
 # no assertions
 alias javanoa="java -da"
