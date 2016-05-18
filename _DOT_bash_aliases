@@ -61,8 +61,8 @@ function webPermissions
       temp=$1
    fi
 
-   find $temp -type d | xargs chmod 775
-   find $temp -type f | xargs chmod 664
+   find $temp -type d -exec chmod 775 {} \;
+   find $temp -type f -exec chmod 664 {} \;
 }
 
 function setWork
