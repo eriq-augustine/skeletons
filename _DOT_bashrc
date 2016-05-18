@@ -75,9 +75,12 @@ complete -G "*.sql" sqlite
 # ... or force ignoredups and ignorespace
 HISTCONTROL=ignoredups:ignorespace
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000000
-HISTFILESIZE=2000000
+# Don't lose any history! Lest we be doomed to repeat work.
+HISTFILESIZE=400000000
+HISTSIZE=10000
+PROMPT_COMMAND="history -a"
+export HISTSIZE PROMPT_COMMAND
+shopt -s histappend
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -169,3 +172,11 @@ fi
 #export GTK_IM_MODULE=ibus
 #export XMODIFIERS=@im=ibus
 #export QT_IM_MODULE=ibus
+
+# The next line updates PATH for the Google Cloud SDK.
+source /home/eriq/google-cloud-sdk/path.bash.inc
+
+# The next line enables bash completion for gcloud.
+source /home/eriq/google-cloud-sdk/completion.bash.inc
+
+export CLOUDSDK_PYTHON=python2

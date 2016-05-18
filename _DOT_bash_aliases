@@ -1,4 +1,5 @@
 alias addGoPath="export GOPATH=\$GOPATH:\`pwd\`"
+alias gcc101='gcc -lm -std=c99 -Wall -pedantic'
 
 alias razerSet="razercfg --setled Scrollwheel:off ; razercfg --setled GlowingLogo:off ; razercfg --res 1:3"
 
@@ -18,6 +19,8 @@ alias valgrindfull="valgrind --leak-check=full --show-reachable=yes --track-orig
 alias quit="exit"
 
 alias clipboard="xclip -sel clip"
+
+alias winesteam="WINEDEBUG=-all wine \"`find $WINEPREFIX/drive_c/Program* -name Steam.exe`\" -no-dwrite"
 
 # Java stuff
 # no assertions
@@ -161,4 +164,48 @@ function topContributers
    file=$1
 
    git blame -c $file | sed 's/^\S\{1,\}\s(\(\S\{1,\}\)\s\{1,\}20.*$/\1/' | sort | uniq -c | sort -bgr | head -n $numToShow
+}
+
+function quickBench {
+   echo "/dev/zero -> ."
+   dd bs=1M count=512 if=/dev/zero of=.__test__bench__ ;\
+
+   echo ". -> ."
+   dd bs=1M count=512 if=.__test__bench__ of=.__test__bench__2 ;\
+
+   echo ". -> /dev/null"
+   dd bs=1M count=512 if=.__test__bench__ of=/dev/null ;\
+
+   rm .__test__bench__*
+}
+
+function goInit {
+   mkdir -p bin src pkg
+   export GOPATH=`pwd`
+
+   if [ ! -e setenv.sh ]; then
+      cat > setenv.sh <<EOF
+#!/bin/sh
+
+# Set the Go environment to the current directory.
+export GOPATH=\`pwd\`
+export PATH=\$PATH:\$GOPATH/bin
+EOF
+
+      chmod +x setenv.sh
+   fi
+}
+
+function cleanWine {
+   rm ~/.local/share/mime/packages/x-wine*
+   rm ~/.local/share/applications/wine-extension*
+   rm ~/.local/share/icons/hicolor/*/*/application-x-wine-extension*
+   rm ~/.local/share/mime/application/x-wine-extension*
+   rm -f ~/.local/share/applications/wine-extension*.desktop
+   rm -f ~/.local/share/icons/hicolor/*/*/application-x-wine-extension*
+   rm -f ~/.local/share/applications/mimeinfo.cache
+   rm -f ~/.local/share/mime/packages/x-wine*
+   rm -f ~/.local/share/mime/application/x-wine-extension*
+   update-desktop-database ~/.local/share/applications
+   update-mime-database ~/.local/share/mime/
 }
