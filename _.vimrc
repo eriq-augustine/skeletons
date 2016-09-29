@@ -124,8 +124,6 @@ set wildmode=longest,list
 "   things to make it look right for you.  It works for me logged in through
 "   SSH.
 
-:map <F2> :set filetype=c<cr>i/**<cr> @author Eric Augustine<cr>/<cr><cr>#include <stdio.h><cr>#include <stdlib.h><cr>#include <unistd.h><cr>#include <math.h><cr><cr>int main(int argc, char *argv[])<cr>{<cr><cr>return EXIT_SUCCESS;<cr><bs>}<esc>kka<tab>
-
 :map <F3> :set paste!<cr>
 
 " Spell check!
@@ -146,3 +144,8 @@ au! BufRead,BufNewFile *.json setfiletype json
 " The modelines bit prevents some security exploits having to do with modelines
 " in files. I never use modelines so I don't miss any functionality here.
 set modelines=0
+
+" Eriq Specifics
+
+" Classic 101 mapping. Sets up a main c file.
+:map <F2> :set filetype=c<cr>i/**<cr> @author Eric Augustine<cr>/<cr><cr>#include <stdio.h><cr>#include <stdlib.h><cr>#include <unistd.h><cr>#include <math.h><cr><cr>int main(int argc, char *argv[]) {<cr><cr>return EXIT_SUCCESS;<cr><bs>}<esc>kka<tab>
