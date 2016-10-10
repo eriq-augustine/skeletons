@@ -25,14 +25,26 @@ filetype plugin on
 
 " Tab Changers
 " TODO(eriq): Use variable input.
-:map T1 :set shiftwidth=1 softtabstop=1<cr>
-:map T2 :set shiftwidth=2 softtabstop=2<cr>
-:map T3 :set shiftwidth=3 softtabstop=3<cr>
-:map T4 :set shiftwidth=4 softtabstop=4<cr>
-:map T5 :set shiftwidth=5 softtabstop=5<cr>
-:map T6 :set shiftwidth=6 softtabstop=6<cr>
-:map T7 :set shiftwidth=7 softtabstop=7<cr>
-:map T8 :set shiftwidth=8 softtabstop=8<cr>
+
+" Soft tabs
+map t1 :set shiftwidth=1 softtabstop=1 tabstop=1 expandtab<cr>
+map t2 :set shiftwidth=2 softtabstop=2 tabstop=2 expandtab<cr>
+map t3 :set shiftwidth=3 softtabstop=3 tabstop=3 expandtab<cr>
+map t4 :set shiftwidth=4 softtabstop=4 tabstop=4 expandtab<cr>
+map t5 :set shiftwidth=5 softtabstop=5 tabstop=5 expandtab<cr>
+map t6 :set shiftwidth=6 softtabstop=6 tabstop=6 expandtab<cr>
+map t7 :set shiftwidth=7 softtabstop=7 tabstop=7 expandtab<cr>
+map t8 :set shiftwidth=8 softtabstop=8 tabstop=8 expandtab<cr>
+
+" Hard tabs
+map T1 :set shiftwidth=1 softtabstop=1 tabstop=1 noexpandtab<cr>
+map T2 :set shiftwidth=2 softtabstop=2 tabstop=2 noexpandtab<cr>
+map T3 :set shiftwidth=3 softtabstop=3 tabstop=3 noexpandtab<cr>
+map T4 :set shiftwidth=4 softtabstop=4 tabstop=4 noexpandtab<cr>
+map T5 :set shiftwidth=5 softtabstop=5 tabstop=5 noexpandtab<cr>
+map T6 :set shiftwidth=6 softtabstop=6 tabstop=6 noexpandtab<cr>
+map T7 :set shiftwidth=7 softtabstop=7 tabstop=7 noexpandtab<cr>
+map T8 :set shiftwidth=8 softtabstop=8 tabstop=8 noexpandtab<cr>
 
 " make page up/down better
 :map <PageUp> <C-U>
@@ -46,22 +58,22 @@ match ExtraWhitespace /\s\+$/
 
 set hlsearch
 
-set viminfo='20,\"500,%	" ' Maximum number of previously edited files for which
+set viminfo='20,\"500,% " ' Maximum number of previously edited files for which
                         "   the marks are remembered.
-			" " Maximum number of lines saved for each register.
-			" % When included, save and restore the buffer list.
+                        " " Maximum number of lines saved for each register.
+                        " % When included, save and restore the buffer list.
                         "   If Vim is started with a file name argument, the
                         "   buffer list is not restored.  If Vim is started
                         "   without a file name argument, the buffer list is
                         "   restored from the viminfo file.  Buffers without a
                         "   file name and buffers for help files are not written
-			"   to the viminfo file.
-set history=500		" keep {number} lines of command line history
+                        "   to the viminfo file.
+set history=500         " keep {number} lines of command line history
 
 " TAB HANDLING, C program formatting:
-set tabstop=8		" ts, number of spaces that a tab *in an input file* is
+set tabstop=3           " ts, number of spaces that a tab *in an input file* is
                         "   equivalent to.
-set shiftwidth=3	" sw, number of spaces shifted left and right when
+set shiftwidth=3        " sw, number of spaces shifted left and right when
                         "   issuing << and >> commands
 set smarttab            " a <Tab> in an indent inserts 'shiftwidth' spaces
 set softtabstop=3       " number of spaces that a tab *pressed by the user*
@@ -104,7 +116,7 @@ set cinkeys=0{,0},0),:,0#,!^F,o,O,e
 set wrap                " whether to wrap lines
 " Make breaks more obvious
 set showbreak=+++\ \
-" set number		" number lines
+" set number            " number lines
 set incsearch
 set showmatch
 set backspace=2
@@ -112,10 +124,10 @@ set backspace=2
 syntax on               " colorize
 
 " VIM DISPLAY OPTIONS
-set showmode		" show which mode (insert, replace, visual)
+set showmode            " show which mode (insert, replace, visual)
 set ruler
 set title
-set showcmd		" show commands in status line when typing
+set showcmd             " show commands in status line when typing
 set wildmenu
 set wildmode=longest,list
 
