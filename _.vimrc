@@ -6,6 +6,12 @@ behave xterm
 
 filetype plugin on
 
+" Hilight search results, but use control-/ to disable the highlight until the next search.
+set hlsearch
+" For some reason, vim sees c-_ as c-/
+" c-/ seems like it never really works.
+:map <c-_> :noh<cr>
+
 " Map ctrl-f to insert/leave insert mode.
 :nmap <c-f> i
 :imap <c-f> <esc>
@@ -55,8 +61,6 @@ highlight ExtraWhitespace ctermbg=yellow
 " match ExtraWhitespace /\s\+$/
 " match ExtraWhitespace /\s\+\%#\@<!$/
 match ExtraWhitespace /\s\+$/
-
-set hlsearch
 
 set viminfo='20,\"500,% " ' Maximum number of previously edited files for which
                         "   the marks are remembered.
