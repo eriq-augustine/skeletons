@@ -45,6 +45,15 @@
          cp -R * "$backPath"
       }
 
+      function findvim {
+         target="."
+         if [ $# -gt 1 ]; then
+            target=$2
+         fi
+
+         vim $(find $target -name $1)
+      }
+
       function fulllatex {
          latex $1.tex && \
          latex $1.tex && \
