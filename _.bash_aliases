@@ -19,12 +19,15 @@
    alias work="cd $WORKINGDIR"
 
    ## Java stuff
+      alias fulldoc="find . -name *.java | xargs javadoc -d docs -version -author -classpath ./target/classes:\`cat classpath.out\` -link https://docs.oracle.com/javase/7/docs/api/"
       # no assertions
       alias javanoa="java -da"
       # assertions (default)
       alias javaa="java -ea"
       alias java="java -ea"
       alias javaXmem="java -Xmx12G -Xms12G"
+      alias javacp="java -cp ./target/classes:\`cat classpath.out\`"
+      alias mvncp="mvn dependency:build-classpath -Dmdep.outputFile=classpath.out"
 
    ## Vim
       # "VIM No O"
