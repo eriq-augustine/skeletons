@@ -2,6 +2,8 @@
 set nocompatible
 behave xterm
 
+colorscheme default
+
 " set regexpengine=1
 
 filetype plugin on
