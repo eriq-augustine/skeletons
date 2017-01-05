@@ -18,6 +18,10 @@ set hlsearch
 :nmap <c-f> i
 :imap <c-f> <esc>
 
+" If syntax break (or filetype changes), use F12 to redo coloring.
+noremap <F12> <Esc>:syntax sync fromstart<CR>
+inoremap <F12> <C-o>:syntax sync fromstart<CR>
+
 " highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 " match OverLength /\%81v.\+/
 " set colorcolumn=80
