@@ -37,6 +37,19 @@
       # Always open multiple files in multiple windows.
       alias vim="vim -O"
 
+   ## Volume Control
+      alias mute="amixer -D pulse set Master mute"
+      alias unmute="amixer -D pulse set Master unmute"
+
+      alias mutetoggle="amixer -D pulse set Master toggle"
+      alias voltoggle="amixer -D pulse set Master toggle"
+
+      alias voldown="amixer -D pulse set Master 5%-"
+      alias "vol-"="amixer -D pulse set Master 5%-"
+
+      alias volup="amixer -D pulse set Master 5%+"
+      alias "vol+"="amixer -D pulse set Master 5%+"
+
    ## Functions
       function back {
          backDir=`pwd`
