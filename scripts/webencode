@@ -1,0 +1,103 @@
+#!/bin/ruby
+
+require 'json'
+
+# Encode a video for use in the browser.
+# Ignore subtitles and posters, they will be handled by a seperate process.
+
+FFMPEG_PATH = '/usr/bin/ffmpeg'
+EXTRACT_STREAMS_PATH = "#{File.expand_path(File.dirname(__FILE__))}/extract_streams"
+
+POSTER_TIME = 5
+
+if (ARGV.size() < 1 || ARGV.size() > 4)
+   puts "USAGE: ruby #{__FILE__} <file> [output basename] [encoding threads] [progress file]"
+   exit
+end
+
+filename = ARGV.shift()
+baseFilename = File.basename(filename, '.*')
+baseDir = File.dirname(filename)
+
+outBasename = nil
+if (!ARGV.empty?)
+   outBasename = ARGV.shift()
+end
+
+threads = nil
+if (!ARGV.empty?)
+   threads = ARGV.shift()
+end
+
+progressFile = nil
+if (!ARGV.empty?)
+   progressFile = ARGV.shift()
+end
+
+# Get all stream information.
+streams = JSON.parse(`#{EXTRACT_STREAMS_PATH} "#{filename.gsub('"', '\"')}"`)
+
+# Right now there is poor support for multiple audio/video streams.
+# So, just pick the "best" ones.
+videoStream = nil
+audioStream = nil
+
+# For video streams, pick the first one.
+videoStream = streams['video'][0]
+
+# For audio streams, first remove any commentary streams, then favor japanese.
+nonCommentary = streams['audio'].select{|stream|
+   stream.fetch('title', '').match(/commentary/i) == nil
+}
+
+sortAudio = nonCommentary.sort{|a, b|
+   if (['japanese', 'jpn', 'jp'].include?(a.fetch('lang', '')))
+      next -1
+   elsif (['japanese', 'jpn', 'jp'].include?(b.fetch('lang', '')))
+      next 1
+   end
+
+   next a['index'] <=> b['index']
+}
+
+audioStream = sortAudio[0]
+
+# Encode with the two streams.
+# Subtitles will be handled by another process.
+videoArgs = [
+   "-c:v libx264",
+   "-preset superfast",
+   "-vf scale=\"trunc(oh*a/2)*2:720\"",
+   "-b:v 1500k",
+   "-maxrate 1500k",
+   "-bufsize 3000k",
+   "-map 0:#{videoStream['index']}"
+]
+
+audioArgs = [
+   "-strict -2",
+   "-c:a aac",
+   "-map 0:#{audioStream['index']}"
+]
+
+staticArgs = [
+   "-i \"#{filename.gsub('"', '\"')}\"",
+   "-y",
+   "-nostats",
+   "-loglevel warning",
+   "-f mp4"
+]
+
+if (threads != nil)
+   staticArgs << " -threads #{threads}"
+else
+   staticArgs << " -threads 0"
+end
+
+if (progressFile != nil)
+   staticArgs << " -progress #{progressFile}"
+end
+
+command = "#{FFMPEG_PATH} #{staticArgs.join(' ')} #{videoArgs.join(' ')} #{audioArgs.join(' ')} '#{baseDir}/#{outBasename}.mp4'"
+puts command
+`#{command}`

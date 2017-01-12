@@ -1,0 +1,11 @@
+#!/usr/bin/ruby
+
+# Randomly return one arg.
+
+# USAGE: ruby randarg args ...
+
+if (ARGV.length() == 0)
+   exit
+end
+
+puts ARGV[Random::rand(ARGV.length())]

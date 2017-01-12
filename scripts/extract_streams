@@ -1,0 +1,103 @@
+#!/bin/ruby
+
+require 'json'
+
+# Pull out relevant stream inforamtion.
+# This is not a full replacement for ffprobe,
+# just a useful utility.
+
+# The stream information will be printed to standard output in JSON.
+
+FFPROBE_PATH = '/usr/bin/ffprobe'
+
+STATE_OPEN = 0
+STATE_METADATA = 1
+STATE_STREAM = 2
+
+DEBUG = 0
+
+def debug(msg)
+   if DEBUG == 1
+      puts msg
+   end
+end
+
+if (ARGV.size() != 1)
+   puts "USAGE: #{__FILE__} <file>"
+   exit 1
+end
+
+filename = ARGV.shift()
+baseFilename = File.basename(filename, '.*')
+baseDir = File.dirname(filename)
+
+streams = {
+   :metadata => {},
+   :video => [],
+   :audio => [],
+   :subtitle => [],
+   :other => []
+}
+
+command = "#{FFPROBE_PATH} -hide_banner -show_streams -show_format \"#{filename.gsub('"', '\"')}\" 2> /dev/null"
+debug(command)
+rawInfo = `#{command}`
+
+state = STATE_OPEN
+currentStream = nil
+
+rawInfo.each_line{|line|
+   line.strip!()
+
+   begin
+      case state
+      when STATE_OPEN
+         if (line == '[FORMAT]')
+            state = STATE_METADATA
+         elsif (line == '[STREAM]')
+            state = STATE_STREAM
+            currentStream = {}
+         end
+      when STATE_METADATA
+         if (line == '[/FORMAT]')
+            state = STATE_OPEN
+         else
+            data = line.downcase().sub(/^tag:/, '').split('=', 2)
+            streams[:metadata][data[0].strip()] = data[1].strip()
+         end
+      when STATE_STREAM
+         if (line == '[/STREAM]')
+            case currentStream['codec_type']
+            when 'video'
+               streams[:video] << currentStream
+            when 'audio'
+               streams[:audio] << currentStream
+            when 'subtitle'
+               # Ensure that 'lang' is populated if 'language' exists.
+               if (currentStream.has_key?('language') && !currentStream.has_key?('lang'))
+                  currentStream['lang'] = currentStream['language']
+               end
+
+               streams[:subtitle] << currentStream
+            when 'attachment'
+               streams[:other] << currentStream
+            else
+               puts "Unknown codec_type: #{currentStream['codec_type']}."
+               streams[:other] << currentStream
+            end
+
+            currentStream = nil
+            state = STATE_OPEN
+         else
+            data = line.downcase().sub(/^tag:/, '').split('=', 2)
+            currentStream[data[0]] = data[1]
+         end
+      else
+         puts "Unknown case: #{state}."
+         exit 1
+      end
+   rescue Exception => ex
+   end
+}
+
+puts streams.to_json()

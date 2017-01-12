@@ -1,0 +1,21 @@
+#!/bin/sh
+
+if [ $# -lt 1 ] ; then
+   echo "USAGE: pdftojpg <file> ..."
+fi
+
+for file in "$@"; do
+   basefile=`echo $file | sed 's/.*\(\..*\)$/\1/' | xargs basename "$file"`
+
+   mkdir -p "$basefile"
+
+   echo "Converting ${file}... placing results into ${basefile}."
+
+   # convert -density 200 "$file" -resize 200% "$basefile/$basefile-%03d.jpg"
+   # convert "$file" -resize 150% "$basefile/$basefile-%03d.jpg"
+   # convert "$file" -resize 1000x "$basefile/$basefile-%03d.jpg"
+
+   convert -density 300 "$file" -quality 92 -resize 1000 -strip -alpha off "$basefile/$basefile-%03d.jpg"
+
+   echo "Done with ${file}."
+done

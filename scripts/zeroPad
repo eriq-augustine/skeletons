@@ -1,0 +1,20 @@
+#!/usr/bin/ruby
+
+# USAGE: ruby zeroPad.rb files ...
+
+REGEX = /(\d+)(\D*)\.([a-z]+)$/i
+
+ARGV.each{|fileName|
+   match = fileName.match(REGEX)
+
+   if (match)
+      num = "%03d" % match[1].to_i
+      newName = fileName.sub(REGEX, "#{num}#{match[2]}.#{match[3]}")
+
+      #puts newName
+
+      File.rename(fileName, newName)
+   else
+      #puts "No Match: " + fileName
+   end
+}

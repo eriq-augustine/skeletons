@@ -1,0 +1,10 @@
+#!/bin/sh
+
+target="eriq.augustine@gmail.com"
+
+ip=`/home/eriq/scripts/getIp`
+date=`date`
+
+subject="Auto IP Retrieval: $date"
+
+echo "$ip" | mailx -v -A gmail_box -s "${subject}" $target 2> /tmp/ipEmailErr

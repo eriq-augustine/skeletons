@@ -1,0 +1,38 @@
+#!/bin/ruby
+
+require 'json'
+
+# Pull out a poster for the vide file.
+# A poster is an image to show before the video starts playing.
+
+FFMPEG_PATH = '/usr/bin/ffmpeg'
+EXTRACT_STREAMS_PATH = "#{File.expand_path(File.dirname(__FILE__))}/extract_streams"
+
+DEFAULT_POSTER_TIME_SECS = 20
+
+if (ARGV.size() < 3 || ARGV.size() > 4)
+   puts "USAGE: #{__FILE__} <file> <output basename> <output directory> [poster time (seconds)]"
+   exit
+end
+
+filename = ARGV.shift()
+baseFilename = File.basename(filename, '.*')
+baseDir = File.dirname(filename)
+
+outBasename = ARGV.shift()
+outDir = ARGV.shift()
+
+posterTime = DEFAULT_POSTER_TIME_SECS
+if (!ARGV.empty?)
+   posterTime = ARGV.shift()
+end
+
+# Get all stream information.
+streams = JSON.parse(`#{EXTRACT_STREAMS_PATH} "#{filename.gsub('"', '\"')}"`)
+
+staticArgs = "-i \"#{filename.gsub('"', '\"')}\" -y -nostats -loglevel warning"
+
+# Pull out a poster.
+command = "#{FFMPEG_PATH} #{staticArgs} -ss #{posterTime} -vframes 1 '#{outDir}/#{outBasename}_poster.png'"
+puts command
+`#{command}`

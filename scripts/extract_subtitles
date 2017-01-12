@@ -1,0 +1,139 @@
+#!/bin/ruby
+
+require 'digest'
+require 'json'
+
+# Try to discover all the subtitles pertaining to a video file and copy them
+# to another directory (ensuring that they are webvtt).
+
+# No need to multithread.
+# Some quick experiments showed single thread was just as fast.
+
+# Output subtitles will get unique numbers based in their source, file, and stream.
+# The identifier wil be of the form "EFFFSSS".
+#  E - Is the subtitle track external? (Not in container).
+#  FFF - File Index (000 for internal)
+#  Stream Index
+
+DEBUG = true
+
+FFMPEG_PATH = '/usr/bin/ffmpeg'
+EXTRACT_STREAMS_PATH = "#{File.expand_path(File.dirname(__FILE__))}/extract_streams"
+
+SUBTITLE_DIRS = ['sub', 'subs', 'subtitle', 'subtitles']
+SUBTITLE_EXTS = ['srt', 'sub', 'sbv', 'ass', 'ssa', 'aqt', 'jss', 'smi', 'vtt', 'rt', 'pjs', 'stl']
+
+def debug(msg)
+   if (DEBUG)
+      puts msg
+   end
+end
+
+def extractSubtitles(filename, outBasename, outDir, isInternal, fileIndex)
+   internalPrefix = 0
+   if (!isInternal)
+      internalPrefix = 1
+   end
+
+   fileIdPrefix = "#{internalPrefix}#{fileIndex.to_s().rjust(3, '0')}"
+
+   # Get all stream information.
+   streams = JSON.parse(`#{EXTRACT_STREAMS_PATH} "#{filename.gsub('"', '\"')}"`)
+
+   if (streams['subtitle'].empty?)
+      return
+   end
+
+   subtitleCommand = ""
+
+   streams['subtitle'].each{|stream|
+      fileId = "#{fileIdPrefix}#{stream['index'].rjust(2, '0')}"
+      outputFile = "#{File.join(outDir, outBasename)}_#{stream.fetch('lang', 'und')}_#{fileId}.vtt"
+      subtitleCommand += " -c:s webvtt -map 0:#{stream['index']} \"#{outputFile}\""
+   }
+
+   staticArgs = "-i \"#{filename.gsub('"', '\"')}\" -y -nostats -loglevel warning"
+
+   command = "#{FFMPEG_PATH} #{staticArgs} #{subtitleCommand}"
+   debug(command)
+   `#{command}`
+end
+
+def fetchAdjacentSubtitles(filename, outBasename, outDir)
+   baseFilename = File.basename(filename, '.*')
+   baseDir = File.dirname(filename)
+
+   subFiles = []
+   directories = [baseDir]
+
+   # Check for subtitle directories.
+   directories += Dir.entries(baseDir).select{|dirent|
+      File.directory?(File.join(baseDir, dirent)) && SUBTITLE_DIRS.include?(dirent.downcase())
+   }.map{|dirent|
+      File.join(baseDir, dirent)
+   }
+
+   directories.each{|dir|
+      subFiles += fetchSubtitlesFromDirectory(dir, baseFilename)
+   }
+
+   # Copy the subs into the output directory under a standardized name.
+   for i in 0...subFiles.size()
+      extractSubtitles(subFiles[i], outBasename, outDir, false, i)
+   end
+end
+
+def fetchSubtitlesFromDirectory(dir, baseFilename)
+   subs = []
+
+   subs += Dir.entries(dir).select{|dirent|
+      File.file?(File.join(dir, dirent)) && SUBTITLE_EXTS.include?(File.extname(dirent.downcase()).sub(/^\./, ''))
+   }.map{|dirent|
+      File.join(dir, dirent)
+   }
+
+   return subs
+end
+
+# Remove duplicate subtitles.
+# This is useful after all the subtitles have been pulled out and are in a standard format.
+# It is common to see the same subtitle track encoded in various different ways for compatibility.
+def dedupSubtitles(outDir)
+   subHashes = Hash.new{|hash, key|
+      hash[key] = []
+   }
+
+   Dir.glob(File.join(outDir, '*.vtt')).each{|subfile|
+      subHashes[Digest::MD5.file(subfile).hexdigest] << subfile
+   }
+
+   # Remove any duplicate files.
+   # Keep the lowest lexicographic file.
+   # This means that internal subtitles and early streams are favored.
+   subHashes.each_value{|files|
+      sortFiles = files.sort()
+      keep = sortFiles.shift()
+
+      sortFiles.each{|file|
+         debug("Removed duplicate subtitle file: #{file}.")
+         File.delete(file)
+      }
+   }
+end
+
+if (ARGV.size() != 3)
+   puts "USAGE: #{__FILE__} <file> <output basename> <output directory>"
+   exit
+end
+
+filename = ARGV.shift()
+outBasename = ARGV.shift()
+outDir = ARGV.shift()
+
+# Internal subs
+extractSubtitles(filename, outBasename, outDir, true, 0)
+
+# External subs
+fetchAdjacentSubtitles(filename, outBasename, outDir)
+
+dedupSubtitles(outDir)
