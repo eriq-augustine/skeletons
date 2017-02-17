@@ -11,6 +11,7 @@
    alias noSleep="xset s off; xset -dpms"
    alias quit="exit"
    alias rmsvn="find . -name .svn -print0 | xargs -0 rm -rf"
+   alias sshx="ssh -XC -c blowfish-cbc,arcfour,aes128-gcm@openssh.com"
    alias sw="setWork"
    alias unzipall='for z in *.zip; do unzip -q -u -d "`basename "$z" .zip`" "$z"; done'
    alias utf8ToAscii='iconv -c -f utf-8 -t ascii'
