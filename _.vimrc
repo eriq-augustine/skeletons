@@ -3,6 +3,7 @@ set nocompatible
 behave xterm
 
 colorscheme default
+" colorscheme desert
 
 " set regexpengine=1
 

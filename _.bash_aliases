@@ -3,7 +3,7 @@
 ### General
    alias addGoPath="export GOPATH=\$GOPATH:\`pwd\`"
    # Clean a directory of all latex compilation artifacts.
-   alias cleanLatex='rm *.aux *.bbl *.blg *.dvi *.log *.pdf *.ps'
+   alias cleanLatex='rm -f *.aux *.bbl *.blg *.dvi *.log *.pdf *.ps *.out'
    alias clear="clear;clear"
    alias clipboard="xclip -sel clip"
    alias gcc101='gcc -lm -std=c99 -Wall -pedantic'
@@ -26,7 +26,7 @@
       # assertions (default)
       alias javaa="java -ea"
       alias java="java -ea"
-      alias javaXmem="java -Xmx12G -Xms12G"
+      alias javaXmem="java -Xmx25G -Xms25G"
       alias javacp="java -cp ./target/classes:\`cat classpath.out\`"
       alias mvncp="mvn dependency:build-classpath -Dmdep.outputFile=classpath.out"
 
@@ -69,6 +69,13 @@
          fi
 
          vim $(find $target -name $1)
+      }
+
+      function fullpdflatex {
+         pdflatex $1.tex && \
+         bibtex $1.aux && \
+         pdflatex $1.tex && \
+         pdflatex $1.tex
       }
 
       function fulllatex {
@@ -148,6 +155,25 @@ EOF
          echo $WORKINGDIR > $HOME/._workingDirectoryConfig
       }
 
+      # tar each argument in its own archive.
+      function tarAll {
+         for path in "$@" ; do
+            path=${path%/}
+
+            echo "tar cf ${path}.tar ${path}"
+            tar cf "${path}.tar" "${path}"
+         done
+      }
+
+      function tarReplaceAll {
+         for path in "$@" ; do
+            path=${path%/}
+
+            echo "tar cf ${path}.tar ${path}"
+            tar cf "${path}.tar" "${path}" && rm -R "${path}"
+         done
+      }
+
       function webPermissions {
          temp=`pwd`
          if [ $# -ne 0 ];
@@ -157,6 +183,28 @@ EOF
 
          find $temp -type d -exec chmod 755 {} \;
          find $temp -type f -exec chmod 644 {} \;
+      }
+
+      function webGroupPermissions {
+         temp=`pwd`
+         if [ $# -ne 0 ];
+         then
+            temp=$1
+         fi
+
+         find $temp -type d -exec chmod 775 {} \;
+         find $temp -type f -exec chmod 664 {} \;
+      }
+
+      function nasPermissions {
+         temp=`pwd`
+         if [ $# -ne 0 ];
+         then
+            temp=$1
+         fi
+
+         find $temp -type d -exec chmod 775 {} \;
+         find $temp -type f -exec chmod 664 {} \;
       }
 
 ### Eriq Specific
