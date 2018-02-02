@@ -101,8 +101,6 @@ endif
 " Let you go left and right in SQL files (overrides default sql ftplugin)
 let g:omni_sql_no_default_maps = 1
 
-map jgs mawv/ <CR>"ty/ <CR>wvwh"ny/getters<CR>$a<CR><CR><Esc>xxapublic<Esc>"tpa<Esc>"npbiget<Esc>l~ea()<CR>{<CR><Tab>return<Esc>"npa;<CR>}<Esc>=<CR><Esc>/setters<CR>$a<CR><CR><Esc>xxapublic void<Esc>"npbiset<Esc>l~ea(<Esc>"tpa <Esc>"npa)<CR>{<CR><Tab>this.<Esc>"npa=<Esc>"npa;<CR>}<Esc>=<CR>`ak
-
 " see Vim book p 71 for this
 filetype on
 autocmd FileType * set formatoptions=tcql
@@ -152,8 +150,8 @@ set wildmode=longest,list
 " Spell check!
 :map <F4> :set spell!<cr>
 
-" ABBREVIATIONS
-:ab cmain <cr>int<cr>main(int argc, char *argv[])<cr>{<cr>return 0;<cr><bs>}<cr><esc>kkO
+" Linqs-style whitespacing on all windows.
+:map <F5> :windo %s/\s\+$//e \| %s/   /\t/ge<cr>
 
 "" http://vim.wikia.com/wiki/Improved_Hex_editing
 nnoremap <C-H> :Hexmode<CR>

@@ -10,7 +10,7 @@ export EDITOR=/usr/bin/vim
 export LANG='en_US.UTF-8'
 
 export CLASSPATH=.:bin:build:lib:lib/*:classes:config
-export PATH=$HOME/bin:$HOME/scripts:$PATH
+export PATH=$HOME/bin:$HOME/scripts:$PATH:$HOME/.local/bin
 export WORKINGDIR=`cat $HOME/._workingDirectoryConfig`
 
 # More autocompletions
