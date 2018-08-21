@@ -97,6 +97,7 @@ fi
    export QT_IM_MODULE=ibus
 
    export LD_LIBRARY_PATH=.:lib:/usr/local/lib:/usr/lib:/usr/lib32
+   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.lib
    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/libJMagick.so
 
    # Wine
@@ -116,7 +117,9 @@ fi
    export JDK_HOME=/usr/lib/jvm/default
 
    # Ruby
-   export PATH=$PATH:$HOME/.gem/ruby/2.0.0/bin
+   export GEM_HOME=$HOME/.gems
+   export PATH=$HOME/.gems/bin:$PATH
+   export PATH=$PATH:$HOME/.gem/ruby/2.5.0/bin
 
    # visualvm
    export PATH=$PATH:/usr/lib/visualvm/bin
@@ -131,8 +134,12 @@ fi
    export CLOUDSDK_PYTHON=python2
 
    #  Mosek
-   LD_LIBRARY_PATH=/home/eriq/code/mosek/mosek/6/tools/platform/linux64x86/bin
-   MOSEKLM_LICENSE_FILE=/home/eriq/code/mosek/mosek.lic
+   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/software/mosek/8/tools/platform/linux64x86/bin
+   export MOSEKLM_LICENSE_FILE=$HOME/software/mosek/license/mosek.lic
+
+   # Default go settings.
+   export GOPATH=~/code/go
+   export PATH=$PATH:~/code/go
 
 # Alias definitions.
 # Always load aliases last since they might use variables.

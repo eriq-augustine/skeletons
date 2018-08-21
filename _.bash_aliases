@@ -51,7 +51,31 @@
       alias volup="amixer -D pulse set Master 5%+"
       alias "vol+"="amixer -D pulse set Master 5%+"
 
+   ## Image Encoding
+      function optjpg {
+         local inFile=$1
+         local outFile=$2
+
+         # Install mozjpg.
+         cjpeg -quality 85 -outfile "${outFile}" "${inFile}"
+      }
+
+      function optpng {
+         local inFile=$1
+         local outFile=$2
+
+         pngquant --speed 1 --strip --force --output "${outFile}" "${inFile}"
+      }
+
    ## Functions
+
+      # Fetch a PKGBUILD from AUR.
+      function aurFetch {
+         local package=$1
+
+         wget -O PKGBUILD.${package} "https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=${package}"
+      }
+
       function back {
          backDir=`pwd`
          backDir=`basename $backDir`
@@ -162,6 +186,15 @@ EOF
 
             echo "tar cf ${path}.tar ${path}"
             tar cf "${path}.tar" "${path}"
+         done
+      }
+
+      function tarballAll {
+         for path in "$@" ; do
+            path=${path%/}
+
+            echo "tar zcf ${path}.tar.gz ${path}"
+            tar zcf "${path}.tar.gz" "${path}"
          done
       }
 
