@@ -133,7 +133,7 @@ fi
    source /home/eriq/google-cloud-sdk/completion.bash.inc
    export CLOUDSDK_PYTHON=python2
 
-   #  Mosek
+   # Mosek
    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/software/mosek/8/tools/platform/linux64x86/bin
    export MOSEKLM_LICENSE_FILE=$HOME/software/mosek/license/mosek.lic
 

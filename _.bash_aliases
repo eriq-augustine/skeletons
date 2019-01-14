@@ -6,6 +6,7 @@
    alias cleanLatex='rm -f *.aux *.bbl *.blg *.dvi *.log *.pdf *.ps *.out'
    alias clear="clear;clear"
    alias clipboard="xclip -sel clip"
+   alias extensions="find . -type f | ext | sort | uniq -c | sort -n"
    alias gcc101='gcc -lm -std=c99 -Wall -pedantic'
    alias myip="wget -qO - http://cfaj.freeshell.org/ipaddr.cgi"
    alias noSleep="xset s off; xset -dpms"
@@ -51,13 +52,16 @@
       alias volup="amixer -D pulse set Master 5%+"
       alias "vol+"="amixer -D pulse set Master 5%+"
 
+   ## Functions
+
    ## Image Encoding
       function optjpg {
          local inFile=$1
          local outFile=$2
 
          # Install mozjpg.
-         cjpeg -quality 85 -outfile "${outFile}" "${inFile}"
+         # cjpeg -quality 85 -outfile "${outFile}" "${inFile}"
+         mozcjpeg -quality 85 -outfile "${outFile}" "${inFile}"
       }
 
       function optpng {
@@ -66,8 +70,6 @@
 
          pngquant --speed 1 --strip --force --output "${outFile}" "${inFile}"
       }
-
-   ## Functions
 
       # Fetch a PKGBUILD from AUR.
       function aurFetch {
@@ -241,6 +243,7 @@ EOF
       }
 
 ### Eriq Specific
+
    ## Functions
       function eriqClone {
          git clone "git@github.com:eriq-augustine/${1}.git"
@@ -252,8 +255,10 @@ EOF
       }
 
 ### Machine Specific
+
    # Use fstab entry
    alias mountNas="sudo mount /media/nas"
+   alias vpn="ssh 192.168.1.167"
    alias razerSet="razercfg --setled Scrollwheel:off ; razercfg --setled GlowingLogo:off ; razercfg --res 1:2"
    alias skype='xhost +local: && su skype -c skype'
    alias winesteam="WINEDEBUG=-all wine \"`find $WINEPREFIX/drive_c/Program* -name Steam.exe`\" -no-dwrite"

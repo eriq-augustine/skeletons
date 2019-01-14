@@ -82,12 +82,12 @@ set viminfo='20,\"500,% " ' Maximum number of previously edited files for which
 set history=500         " keep {number} lines of command line history
 
 " TAB HANDLING, C program formatting:
-set tabstop=3           " ts, number of spaces that a tab *in an input file* is
+set tabstop=4           " ts, number of spaces that a tab *in an input file* is
                         "   equivalent to.
-set shiftwidth=3        " sw, number of spaces shifted left and right when
+set shiftwidth=4        " sw, number of spaces shifted left and right when
                         "   issuing << and >> commands
 set smarttab            " a <Tab> in an indent inserts 'shiftwidth' spaces
-set softtabstop=3       " number of spaces that a tab *pressed by the user*
+set softtabstop=4       " number of spaces that a tab *pressed by the user*
                         "   is equivalent to
 set shiftround          " round to 'shiftwidth' for "<<" and ">>"
 set expandtab           " don't input tabs; replace with spaces. <local to
