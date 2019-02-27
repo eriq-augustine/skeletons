@@ -1,0 +1,49 @@
+#!/bin/ruby
+
+# Take a path an rename the dirent to remove the name of tags that looks like them come from scanner/subbr groups.
+# These tag are typically surrounded by brackets.
+# Also make sure to remove any leading/trailing whitespace/uderscore/dash.
+
+require 'fileutils'
+
+def main(paths)
+   paths.uniq!()
+
+   paths.each{|path|
+      extension = File.extname(path)
+      dir = File.dirname(path)
+      basename = File.basename(path, '.*')
+
+      # First strip bracketed sections.
+      newName = basename.strip().gsub(/\[[^\]]+\]/, '')
+
+      # Trim whitespace/underscore/dash.
+      newName = newName.gsub(/^[\s\-_]+/, '').gsub(/[\s\-_]+$/, '')
+
+      # Remove any whitespace/underscores/dashes that apear directly before a period.
+      newName = newName.gsub(/[\s\-_]+\./, '.')
+
+      if (basename != newName)
+         newPath = File.join(dir, newName) + extension
+
+         puts "mv '#{path}' '#{newPath}'"
+         FileUtils.mv(path, newPath)
+      end
+   }
+end
+
+def loadArgs(args)
+   if (args.size() == 0 || args.map{|arg| arg.gsub('-', '').downcase()}.include?('help'))
+      puts "USAGE: ruby #{$0} <path> ..."
+      puts "   Take a path an rename the dirent to remove the name of tags that looks like them come from scanner/subbr groups."
+      puts "   These tag are typically surrounded by brackets."
+      puts "   Also make sure to remove any leading/trailing whitespace/uderscore/dash."
+      exit(1)
+   end
+
+   return args
+end
+
+if ($0 == __FILE__)
+   main(loadArgs(ARGV))
+end

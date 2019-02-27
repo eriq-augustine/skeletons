@@ -1,0 +1,31 @@
+#!/bin/ruby
+
+# Get the extension for a file.
+# If there is no ext, return a blank.
+
+def main(paths)
+   if (paths == nil || paths.size() == 0)
+      paths = $stdin
+   end
+
+   paths.each{|path|
+      path = path.strip()
+
+      puts File.extname(path)
+   }
+end
+
+def parseArgs(args)
+   if (args.map{|arg| arg.gsub('-', '').downcase()}.include?('help'))
+      puts "USAGE: #{$0} [path ...]"
+      puts "Gets the entension for one or more paths."
+      puts "If no paths are specified from the command line, then paths are taken from stdin (one path per line)."
+      exit(1)
+   end
+
+   return args
+end
+
+if (__FILE__ == $0)
+   main(parseArgs(ARGV))
+end

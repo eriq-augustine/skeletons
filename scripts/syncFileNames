@@ -1,0 +1,52 @@
+#!/bin/ruby
+
+if (ARGV.size() != 2)
+   puts "USAGE: #{__FILE__} <source> <target>"
+   puts "|source| is used as the file name source, |target| will get changed."
+   exit 1
+end
+
+source = ARGV.shift()
+target = ARGV.shift()
+
+source = source.strip().sub(/\/$/, '')
+target = target.strip().sub(/\/$/, '')
+
+sourceNames = Dir.entries(source).sort().delete_if{|name| ['.', '..'].include?(name)}
+targetNames = Dir.entries(target).sort().delete_if{|name| ['.', '..'].include?(name)}
+
+if (sourceNames.size() != targetNames.size())
+   $stderr.puts "Filename count mismatch. Source has #{sourceNames.size()}, target has #{targetNames.size()}."
+   exit 2
+end
+
+for i in 0...sourceNames.size()
+end
+
+error = false
+for i in 0...sourceNames.size()
+   if (File.extname(targetNames[i]).downcase() != File.extname(sourceNames[i]).downcase())
+      puts "X  #{targetNames[i]} -> #{sourceNames[i]}"
+      error = true
+   else
+      puts "   #{targetNames[i]} -> #{sourceNames[i]}"
+   end
+end
+
+if (error)
+   $stderr.puts "Extension mismatch."
+   exit 3
+end
+
+puts "Renaming #{target}"
+print "Ok? [y/N]: "
+if (gets().strip().downcase() != 'y')
+   puts "Bailing out"
+   exit 0
+end
+
+puts "Renaming"
+for i in 0...sourceNames.size()
+   puts "#{File.join(target, targetNames[i])} -> #{File.join(target, sourceNames[i])}"
+   File.rename(File.join(target, targetNames[i]), File.join(target, sourceNames[i]))
+end
