@@ -254,30 +254,6 @@ EOF
          git diff master --name-only -z | xargs -0 grep '//TEST'
       }
 
-### Machine Specific
-
-   # Use fstab entry
-   alias mountNas="sudo mount /media/nas"
-   alias vpn="ssh 192.168.1.167"
-   alias razerSet="razercfg --setled Scrollwheel:off ; razercfg --setled GlowingLogo:off ; razercfg --res 1:2"
-   alias skype='xhost +local: && su skype -c skype'
-   alias winesteam="WINEDEBUG=-all wine \"`find $WINEPREFIX/drive_c/Program* -name Steam.exe`\" -no-dwrite"
-
-   ## Functions
-      function cleanWine {
-         rm ~/.local/share/mime/packages/x-wine*
-         rm ~/.local/share/applications/wine-extension*
-         rm ~/.local/share/icons/hicolor/*/*/application-x-wine-extension*
-         rm ~/.local/share/mime/application/x-wine-extension*
-         rm -f ~/.local/share/applications/wine-extension*.desktop
-         rm -f ~/.local/share/icons/hicolor/*/*/application-x-wine-extension*
-         rm -f ~/.local/share/applications/mimeinfo.cache
-         rm -f ~/.local/share/mime/packages/x-wine*
-         rm -f ~/.local/share/mime/application/x-wine-extension*
-         update-desktop-database ~/.local/share/applications
-         update-mime-database ~/.local/share/mime/
-      }
-
       function setTime {
          sudo ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
          sudo ntpd -qg
