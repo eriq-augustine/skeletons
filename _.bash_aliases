@@ -11,6 +11,7 @@
    alias myip="wget -qO - http://cfaj.freeshell.org/ipaddr.cgi"
    alias noSleep="xset s off; xset -dpms"
    alias quit="exit"
+   alias rawsort="LC_ALL=C sort"
    alias rmsvn="find . -name .svn -print0 | xargs -0 rm -rf"
    alias sshx="ssh -XC -c blowfish-cbc,arcfour,aes128-gcm@openssh.com"
    alias sw="setWork"
