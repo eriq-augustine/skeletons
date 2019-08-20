@@ -37,7 +37,9 @@
       alias vimno="vim -O1"
       # Readonly
       alias vimr="vim -R"
-      # Always open multiple files in multiple windows.
+      # Open multiple files with horizontal splits.
+      alias vimo="vim -o"
+      # Always open multiple files with vertical splits.
       alias vim="vim -O"
 
    ## Volume Control
