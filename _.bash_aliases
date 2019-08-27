@@ -13,7 +13,7 @@
    alias quit="exit"
    alias rawsort="LC_ALL=C sort"
    alias rmsvn="find . -name .svn -print0 | xargs -0 rm -rf"
-   alias sshx="ssh -XC -c blowfish-cbc,arcfour,aes128-gcm@openssh.com"
+   alias sshx="ssh -XC -c aes256-gcm@openssh.com,aes128-gcm@openssh.com"
    alias sw="setWork"
    alias unzipall='for z in *.zip; do unzip -q -u -d "`basename "$z" .zip`" "$z"; done'
    alias utf8ToAscii='iconv -c -f utf-8 -t ascii'
@@ -203,12 +203,21 @@ EOF
          done
       }
 
+      function tarballReplaceAll {
+         for path in "$@" ; do
+            path=${path%/}
+
+            echo "tar zcf ${path}.tar.gz ${path}"
+            tar zcf "${path}.tar.gz" "${path}" && rm -Rf "${path}"
+         done
+      }
+
       function tarReplaceAll {
          for path in "$@" ; do
             path=${path%/}
 
             echo "tar cf ${path}.tar ${path}"
-            tar cf "${path}.tar" "${path}" && rm -R "${path}"
+            tar cf "${path}.tar" "${path}" && rm -Rf "${path}"
          done
       }
 
