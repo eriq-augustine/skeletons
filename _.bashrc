@@ -14,6 +14,7 @@ export WORKINGDIR=`cat $HOME/._workingDirectoryConfig`
 
 # Language-specific variables.
 export CLASSPATH=.:bin:build:lib:lib/*:classes:config
+export PATH=$PATH:$HOME/go/bin
 export PYTHONDONTWRITEBYTECODE=1
 
 # More autocompletions
@@ -24,11 +25,8 @@ complete -G "*.sql" sqlite
 # History control
 # Don't lose any history! Lest we be doomed to repeat work.
 HISTCONTROL=ignoredups:ignorespace
-HISTFILESIZE=40000000
-HISTSIZE=10000
-PROMPT_COMMAND="history -a"
-export HISTSIZE PROMPT_COMMAND
-shopt -s histappend
+HISTFILESIZE='INFINITE'
+HISTSIZE='INFINITE'
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -92,12 +90,6 @@ if [ -f /etc/bash_completion.d ]; then
 fi
 
 # Machine Specific
-   export PATH=$PATH:/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/bin:/usr/games:/usr/bin/jre1.6.0_29/bin:/usr/bin/jdk1.7.0_02/bin
-
-   # IBUS
-   export GTK_IM_MODULE=ibus
-   export XMODIFIERS=@im=ibus
-   export QT_IM_MODULE=ibus
 
    export LD_LIBRARY_PATH=.:lib:/usr/local/lib:/usr/lib:/usr/lib32
    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.lib
@@ -108,9 +100,6 @@ fi
    export WINEARCH=win64
    #export WINEPREFIX=/media/media/wineSteam32
    #export WINEARCH=win32
-
-   # Android
-   export ANDROID_HOME=/opt/android-sdk
 
    # Both AMI and EC2 tools are installed here.
    #export EC2_HOME="/usr/local/lib/ec2-ami-tools-1.3-66634"
@@ -126,23 +115,6 @@ fi
 
    # visualvm
    export PATH=$PATH:/usr/lib/visualvm/bin
-
-   export ANT_HOME=/usr/share/apache-ant
-   export PATH=$PATH:$ANT_HOME/bin
-
-   # Update PATH for the Google Cloud SDK.
-   source /home/eriq/google-cloud-sdk/path.bash.inc
-   # Enable bash completion for gcloud.
-   source /home/eriq/google-cloud-sdk/completion.bash.inc
-   export CLOUDSDK_PYTHON=python2
-
-   # Mosek
-   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/software/mosek/8/tools/platform/linux64x86/bin
-   export MOSEKLM_LICENSE_FILE=$HOME/software/mosek/license/mosek.lic
-
-   # Default go settings.
-   export GOPATH=~/code/go
-   export PATH=$PATH:~/code/go
 
 # Alias definitions.
 # Always load aliases last since they might use variables.
