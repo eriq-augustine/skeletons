@@ -1,0 +1,15 @@
+[user]
+	name = Eriq Augustine
+	email = eriq.augustine@gmail.com
+[github]
+	user = eriq-augustine
+[core]
+	autocrlf = false
+	filemode = false
+[push]
+	default = simple
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
