@@ -10,6 +10,8 @@ export EDITOR=/usr/bin/vim
 export LANG='en_US.UTF-8'
 
 export PATH=$HOME/bin:$HOME/scripts:$PATH:$HOME/.local/bin
+
+touch $HOME/._workingDirectoryConfig
 export WORKINGDIR=`cat $HOME/._workingDirectoryConfig`
 
 # Language-specific variables.
