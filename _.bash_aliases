@@ -3,7 +3,7 @@
 ### General
    alias addGoPath="export GOPATH=\$GOPATH:\`pwd\`"
    # Clean a directory of all latex compilation artifacts.
-   alias cleanLatex='rm -f *.aux *.bbl *.blg *.dvi *.log *.pdf *.ps *.out'
+   alias cleanLatex='rm -f *.aux *.bbl *.blg *.dvi *.log *.pdf *.ps *.lof *.lot *.toc *.out'
    alias clear="clear;clear"
    alias clipboard="xclip -sel clip"
    alias extensions="find . -type f | ext | sort | uniq -c | sort -n"
