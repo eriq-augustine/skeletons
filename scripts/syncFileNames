@@ -1,4 +1,4 @@
-#!/bin/ruby
+#!/usr/bin/ruby
 
 if (ARGV.size() != 2)
    puts "USAGE: #{__FILE__} <source> <target>"
