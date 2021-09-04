@@ -1,4 +1,4 @@
-# Machine specific aliases/functions are at the bottom.
+# Machine specific aliases/functions go at the bottom.
 
 ### General
    alias addGoPath="export GOPATH=\$GOPATH:\`pwd\`"
@@ -10,6 +10,7 @@
    alias gcc101='gcc -lm -std=c99 -Wall -pedantic'
    alias myip="wget -qO - http://cfaj.freeshell.org/ipaddr.cgi"
    alias noSleep="xset s off; xset -dpms"
+   alias prm="perl -e 'for(<*>){unlink}'"
    alias quit="exit"
    alias rawsort="LC_ALL=C sort"
    alias rmsvn="find . -name .svn -print0 | xargs -0 rm -rf"
