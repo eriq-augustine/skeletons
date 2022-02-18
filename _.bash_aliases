@@ -10,6 +10,7 @@
    alias gcc101='gcc -lm -std=c99 -Wall -pedantic'
    alias myip="wget -qO - http://cfaj.freeshell.org/ipaddr.cgi"
    alias noSleep="xset s off; xset -dpms"
+   alias oom-run="systemd-run --user --pty --same-dir --wait --collect --service-type=exec --quiet --slice=oom.slice"
    alias prm="perl -e 'for(<*>){unlink}'"
    alias quit="exit"
    alias rawsort="LC_ALL=C sort"
@@ -195,6 +196,15 @@ EOF
          done
       }
 
+      function tarReplaceAll {
+         for path in "$@" ; do
+            path=${path%/}
+
+            echo "tar cf ${path}.tar ${path}"
+            tar cf "${path}.tar" "${path}" && rm -Rf "${path}"
+         done
+      }
+
       function tarballAll {
          for path in "$@" ; do
             path=${path%/}
@@ -213,12 +223,21 @@ EOF
          done
       }
 
-      function tarReplaceAll {
+      function zipAll {
          for path in "$@" ; do
             path=${path%/}
 
-            echo "tar cf ${path}.tar ${path}"
-            tar cf "${path}.tar" "${path}" && rm -Rf "${path}"
+            echo "zip -r ${path}.zip ${path}"
+            zip -r "${path}.zip" "${path}"
+         done
+      }
+
+      function zipReplaceAll {
+         for path in "$@" ; do
+            path=${path%/}
+
+            echo "zip -r ${path}.zip ${path}"
+            zip -r "${path}.zip" "${path}" && rm -Rf "${path}"
          done
       }
 
