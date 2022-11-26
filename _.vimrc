@@ -159,3 +159,7 @@ map T8 :set shiftwidth=8 softtabstop=8 tabstop=8 noexpandtab<cr>
 " This does not transparently edit the hex, you have to swap back to non-hex mode and save.
 map <F6> :%!xxd <cr> :set syntax=xxd <cr>
 map <S-F6> :%!xxd -r <cr> :filetype detect <cr> :syntax sync fromstart <cr>
+
+" Don't highlight line comments in JSON.
+autocmd FileType json syntax match Comment +\/\/.\+$+
+autocmd FileType json syntax match Comment +#.\+$+
