@@ -1,0 +1,19 @@
+#!/bin/bash
+
+function main() {
+    if [[ $# -ne 1 ]] ; then
+        echo "USAGE: $0 <volume>"
+        exit 1
+    fi
+
+    trap exit SIGINT
+    set -e
+
+    local volume=$1
+
+    for sink in $(pactl list short sinks | sed 's/^\([0-9]\+\)\s.*$/\1/') ; do
+        pactl set-sink-volume "${sink}" "${volume}"
+    done
+}
+
+[[ "${BASH_SOURCE[0]}" == "${0}" ]] && main "$@"
