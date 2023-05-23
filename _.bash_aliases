@@ -1,15 +1,17 @@
-# Machine specific aliases/functions are at the bottom.
+# Machine specific aliases/functions go at the bottom.
 
 ### General
    alias addGoPath="export GOPATH=\$GOPATH:\`pwd\`"
    # Clean a directory of all latex compilation artifacts.
-   alias cleanLatex='rm -f *.aux *.bbl *.blg *.dvi *.log *.pdf *.ps *.out'
+   alias cleanLatex='rm -f *.aux *.bbl *.blg *.dvi *.log *.pdf *.ps *.lof *.lot *.toc *.out'
    alias clear="clear;clear"
    alias clipboard="xclip -sel clip"
    alias extensions="find . -type f | ext | sort | uniq -c | sort -n"
    alias gcc101='gcc -lm -std=c99 -Wall -pedantic'
    alias myip="wget -qO - http://cfaj.freeshell.org/ipaddr.cgi"
    alias noSleep="xset s off; xset -dpms"
+   alias oom-run="systemd-run --user --pty --same-dir --wait --collect --service-type=exec --quiet --slice=oom.slice"
+   alias prm="perl -e 'for(<*>){unlink}'"
    alias quit="exit"
    alias rawsort="LC_ALL=C sort"
    alias rmsvn="find . -name .svn -print0 | xargs -0 rm -rf"
@@ -194,6 +196,15 @@ EOF
          done
       }
 
+      function tarReplaceAll {
+         for path in "$@" ; do
+            path=${path%/}
+
+            echo "tar cf ${path}.tar ${path}"
+            tar cf "${path}.tar" "${path}" && rm -Rf "${path}"
+         done
+      }
+
       function tarballAll {
          for path in "$@" ; do
             path=${path%/}
@@ -212,12 +223,21 @@ EOF
          done
       }
 
-      function tarReplaceAll {
+      function zipAll {
          for path in "$@" ; do
             path=${path%/}
 
-            echo "tar cf ${path}.tar ${path}"
-            tar cf "${path}.tar" "${path}" && rm -Rf "${path}"
+            echo "zip -r ${path}.zip ${path}"
+            zip -r "${path}.zip" "${path}"
+         done
+      }
+
+      function zipReplaceAll {
+         for path in "$@" ; do
+            path=${path%/}
+
+            echo "zip -r ${path}.zip ${path}"
+            zip -r "${path}.zip" "${path}" && rm -Rf "${path}"
          done
       }
 

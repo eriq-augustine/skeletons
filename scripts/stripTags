@@ -1,4 +1,4 @@
-#!/bin/ruby
+#!/usr/bin/ruby
 
 # Take a path an rename the dirent to remove the name of tags that looks like them come from scanner/subbr groups.
 # These tag are typically surrounded by brackets.

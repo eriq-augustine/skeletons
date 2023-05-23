@@ -10,6 +10,8 @@ export EDITOR=/usr/bin/vim
 export LANG='en_US.UTF-8'
 
 export PATH=$HOME/bin:$HOME/scripts:$PATH:$HOME/.local/bin
+
+touch $HOME/._workingDirectoryConfig
 export WORKINGDIR=`cat $HOME/._workingDirectoryConfig`
 
 # Language-specific variables.
@@ -27,6 +29,8 @@ complete -G "*.sql" sqlite
 HISTCONTROL=ignoredups:ignorespace
 HISTFILESIZE='INFINITE'
 HISTSIZE='INFINITE'
+# Export entries to history right away (actually after the command finishes).
+export PROMPT_COMMAND='history -a'
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -92,33 +96,6 @@ fi
 if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
-
-# Machine Specific
-
-   export LD_LIBRARY_PATH=.:lib:/usr/local/lib:/usr/lib:/usr/lib32
-   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.lib
-   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/libJMagick.so
-
-   # Wine
-   export WINEPREFIX=/media/media/wineSteam64
-   export WINEARCH=win64
-   #export WINEPREFIX=/media/media/wineSteam32
-   #export WINEARCH=win32
-
-   # Both AMI and EC2 tools are installed here.
-   #export EC2_HOME="/usr/local/lib/ec2-ami-tools-1.3-66634"
-   #export PATH=$PATH:${EC2_HOME}/bin
-
-   export JAVA_HOME=/usr/lib/jvm/default
-   export JDK_HOME=/usr/lib/jvm/default
-
-   # Ruby
-   export GEM_HOME=$HOME/.gems
-   export PATH=$HOME/.gems/bin:$PATH
-   export PATH=$PATH:$HOME/.gem/ruby/2.5.0/bin
-
-   # visualvm
-   export PATH=$PATH:/usr/lib/visualvm/bin
 
 # Alias definitions.
 # Always load aliases last since they might use variables.

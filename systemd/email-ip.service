@@ -1,0 +1,7 @@
+[Unit]
+Description=Email out this machine's IP address.
+
+[Service]
+User=eriq
+Type=simple
+ExecStart=/home/eriq/code/skeletons/scripts/email-ip
