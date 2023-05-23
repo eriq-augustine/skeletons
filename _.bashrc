@@ -89,6 +89,10 @@ if [ -f /etc/bash_completion.d ]; then
     . /etc/bash_completion.d
 fi
 
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
+
 # Machine Specific
 
    export LD_LIBRARY_PATH=.:lib:/usr/local/lib:/usr/lib:/usr/lib32
