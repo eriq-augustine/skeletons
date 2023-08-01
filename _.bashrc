@@ -18,6 +18,7 @@ export WORKINGDIR=`cat $HOME/._workingDirectoryConfig`
 export CLASSPATH=.:bin:build:lib:lib/*:classes:config
 export PATH=$PATH:$HOME/go/bin
 export PYTHONDONTWRITEBYTECODE=1
+export GLOBAL_VENV_PATH="${HOME}/.venv"
 
 # More autocompletions
 complete -G "*.db" sqlite3
@@ -29,6 +30,7 @@ complete -G "*.sql" sqlite
 HISTCONTROL=ignoredups:ignorespace
 HISTFILESIZE='INFINITE'
 HISTSIZE='INFINITE'
+
 # Export entries to history right away (actually after the command finishes).
 export PROMPT_COMMAND='history -a'
 

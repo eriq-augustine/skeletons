@@ -56,8 +56,8 @@ set modelines=0
 " Colors on.
 syntax on
 
-colorscheme default
-" colorscheme desert
+" colorscheme default
+colorscheme torte
 
 " Hilight search results,
 " but use control-/ (defined below) to disable the highlight until the next search.

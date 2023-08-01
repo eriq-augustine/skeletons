@@ -1,4 +1,4 @@
-# Machine specific aliases/functions go at the bottom.
+# Machine specific aliases/functions are at the bottom.
 
 ### General
    alias addGoPath="export GOPATH=\$GOPATH:\`pwd\`"
@@ -33,6 +33,23 @@
       alias javaXmem="java -Xmx25G -Xms25G"
       alias javacp="java -cp ./target/classes:\`cat classpath.out\`"
       alias mvncp="mvn dependency:build-classpath -Dmdep.outputFile=classpath.out"
+
+   ## Python stuff
+      function venv {
+         if [[ ! -e "${GLOBAL_VENV_PATH}" ]] ; then
+            python3 -m venv "${GLOBAL_VENV_PATH}"
+         fi
+
+         # Check the current venv status.
+         if [[ -z "${VIRTUAL_ENV}" ]] ; then
+            # We are not in a venv.
+            bash --rcfile <(echo ". ${HOME}/.bashrc; source ${GLOBAL_VENV_PATH}/bin/activate")
+         else
+            # We are in a venv.
+            deactivate
+            exit
+         fi
+      }
 
    ## Vim
       # "VIM No O"
@@ -220,6 +237,15 @@ EOF
 
             echo "tar zcf ${path}.tar.gz ${path}"
             tar zcf "${path}.tar.gz" "${path}" && rm -Rf "${path}"
+         done
+      }
+
+      function tarReplaceAll {
+         for path in "$@" ; do
+            path=${path%/}
+
+            echo "tar cf ${path}.tar ${path}"
+            tar cf "${path}.tar" "${path}" && rm -Rf "${path}"
          done
       }
 
