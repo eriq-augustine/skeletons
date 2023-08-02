@@ -7,6 +7,7 @@
 umask 007
 
 export EDITOR=/usr/bin/vim
+export SYSTEMD_EDITOR=/usr/bin/vim
 export LANG='en_US.UTF-8'
 
 export PATH=$HOME/bin:$HOME/scripts:$PATH:$HOME/.local/bin
@@ -88,7 +89,7 @@ if [ -x /bin/dircolors -o -x /usr/bin/dircolors ]; then
     alias grep='grep --color=auto'
 fi
 
-# enable programmable completion features (you don't need to enable
+# Enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if [ -f /etc/bash_completion.d ]; then
