@@ -240,15 +240,6 @@ EOF
          done
       }
 
-      function tarReplaceAll {
-         for path in "$@" ; do
-            path=${path%/}
-
-            echo "tar cf ${path}.tar ${path}"
-            tar cf "${path}.tar" "${path}" && rm -Rf "${path}"
-         done
-      }
-
       function zipAll {
          for path in "$@" ; do
             path=${path%/}

@@ -1,0 +1,10 @@
+# /etc/systemd/system/reboot_if_no_connection.service
+
+[Unit]
+Description=Reboot the machine if network connections cannot be made.
+
+[Service]
+ExecStart=/home/eriq/scripts/reboot_if_no_connection.sh enp3s0
+
+[Install]
+WantedBy=multi-user.target
