@@ -16,7 +16,7 @@ export WORKINGDIR=`cat $HOME/._workingDirectoryConfig`
 
 # Language-specific variables.
 export CLASSPATH=.:bin:build:lib:lib/*:classes:config
-export PATH=$PATH:$HOME/go/bin
+export PATH=$PATH:$HOME/go/bin:/usr/local/go/bin
 export PYTHONDONTWRITEBYTECODE=1
 export GLOBAL_VENV_PATH="${HOME}/.venv"
 
