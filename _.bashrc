@@ -9,6 +9,7 @@ umask 007
 export EDITOR=/usr/bin/vim
 export SYSTEMD_EDITOR=/usr/bin/vim
 export LANG='en_US.UTF-8'
+export LC_TIME='C.UTF-8'
 
 export PATH=$HOME/bin:$HOME/scripts:$PATH:$HOME/.local/bin
 
