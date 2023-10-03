@@ -10,6 +10,7 @@
    alias gcc101='gcc -lm -std=c99 -Wall -pedantic'
    alias myip="wget -qO - http://cfaj.freeshell.org/ipaddr.cgi"
    alias noSleep="xset s off; xset -dpms"
+   alias nohist="unset HISTFILE"
    alias oom-run="systemd-run --user --pty --same-dir --wait --collect --service-type=exec --quiet --slice=oom.slice"
    alias prm="perl -e 'for(<*>){unlink}'"
    alias quit="exit"
