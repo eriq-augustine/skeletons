@@ -107,8 +107,7 @@
          backPath="$HOME/back/$backDir"
 
          rm -Rf "$backPath"
-         mkdir -p "$backPath"
-         cp -R * "$backPath"
+         cp -R $(pwd) "$backPath"
       }
 
       function findvim {
