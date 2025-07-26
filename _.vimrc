@@ -100,8 +100,9 @@ match ExtraWhitespace /\s\+$/
 :imap <c-f> <esc>
 
 " For some reason, vim sees c-_ as c-/
-" c-/ seems like it never really works.
+" c-/ seems like it never really works on Mac.
 :map <c-_> :noh<cr>
+:map <c-/> :noh<cr>
 
 " If syntax break (or filetype changes), use F12 to redo coloring.
 noremap <F12> <Esc>:syntax sync fromstart<CR>
