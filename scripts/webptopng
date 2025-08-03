@@ -1,0 +1,98 @@
+#!/usr/bin/env python3
+
+import argparse
+import multiprocessing
+import os
+import shutil
+import subprocess
+import tempfile
+import uuid
+
+TARGET_EXTENSION = '.webp'
+CONVERT_EXTENSION = '.png'
+
+DEFAULT_CONVERSION_PROGRAM = 'magick'
+
+TEMPFILE_PREFIX = f'convert_{TARGET_EXTENSION[1:]}_{CONVERT_EXTENSION[1:]}__'
+
+def _process_path(args, path):
+    print(f"Processing '{path}'.")
+
+    out_path = os.path.splitext(path)[0] + CONVERT_EXTENSION
+
+    temp_path = None
+    while ((temp_path is None) or os.path.exists(temp_path)):
+        temp_path = os.path.join(tempfile.gettempdir(), f"{TEMPFILE_PREFIX}{str(uuid.uuid4())}{CONVERT_EXTENSION}")
+
+    argv = [
+        args.conversion_program,
+        path,
+        '-flatten',
+        temp_path,
+    ]
+
+    if (args.dry_run):
+        return
+
+    result = subprocess.run(argv, capture_output = True)
+    if (result.returncode != 0):
+        raise ValueError(f"{args.conversion_program} did not exit cleanly. Stdout: '{result.stdout,}', Stderr: '{result.stderr}'")
+
+    shutil.move(temp_path, out_path)
+    os.remove(path)
+
+def _search_path(path):
+    path = os.path.abspath(path)
+
+    paths = []
+
+    if (os.path.isfile(path)):
+        extension = os.path.splitext(path)[-1].lower()
+        if (extension == TARGET_EXTENSION):
+            paths.append(path)
+    elif (os.path.isdir(path)):
+        for filename in sorted(os.listdir(path)):
+            paths += _search_path(os.path.join(path, filename))
+
+    return paths
+
+def _check_dependencies(args):
+    if (shutil.which(args.conversion_program) is None):
+        raise ValueError(f"Could not find `{args.conversion_program}`, cannot convert images.")
+
+def main(args):
+    _check_dependencies(args)
+
+    paths = []
+    for path in args.paths:
+        paths += _search_path(path)
+
+    print(f"Found {len(paths)} matching paths.")
+
+    thread_count = max(1, multiprocessing.cpu_count() - 1)
+    with multiprocessing.Pool(thread_count) as pool:
+        pool.starmap(_process_path, [(args, path) for path in paths])
+
+def _load_args():
+    parser = argparse.ArgumentParser(description = 'Convert .webp files to .png.')
+
+    parser.add_argument('--count', dest = 'count',
+        action = 'store', type = int, default = 100,
+        help = 'Loop this number of times (default: %(default)s).')
+
+    parser.add_argument('--conversion-program', dest = 'conversion_program',
+        action = 'store', type = str, default = DEFAULT_CONVERSION_PROGRAM,
+        help = ('The image conversion program to use (default: %(default)s).'))
+
+    parser.add_argument('--dry-run', dest = 'dry_run',
+        action = 'store_true', default = False,
+        help = 'Do not actually process files (default: %(default)s).')
+
+    parser.add_argument('paths', metavar = 'PATH',
+        nargs = '*', default = ['.'],
+        help = "The paths to process. Defaults to '.'.")
+
+    return parser.parse_args()
+
+if (__name__ == '__main__'):
+    main(_load_args())
